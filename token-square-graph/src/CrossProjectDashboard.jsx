@@ -32,7 +32,9 @@ const CrossProjectDashboard = () => {
     <div className="container">
       <h1 className="text-4xl">Cross Project Comparison</h1>
       <div className="col-span-12 flex items-center">
-        <VictoryChart>
+        <VictoryChart
+          domainPadding={50}
+        >
           <VictoryGroup offset={5}>
             {/* TODO: fix the scale, add labels */}
             {grouped.map((alloc, i) => (
