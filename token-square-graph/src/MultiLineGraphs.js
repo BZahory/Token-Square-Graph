@@ -485,7 +485,7 @@ export function CurveOverlay() {
       containerComponent={
         <VictoryVoronoiContainer
           radius={5}
-          labels={({ datum }) => `Week: ${datum.x}, Tokens: ${datum.y}`}
+          labels={({ datum }) => `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(datum.y, 2)}`}
         />
       }
     >
