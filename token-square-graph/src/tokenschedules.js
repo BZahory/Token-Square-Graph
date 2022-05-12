@@ -150,4 +150,6 @@ export const def = {
   ],
 };
 
-export default tokenSchedules = [canvas, synthetix, abc, def];
+const tokenSchedules = [canvas, synthetix, abc, def];
+
+export default tokenSchedules;

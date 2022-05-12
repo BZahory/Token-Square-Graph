@@ -22,7 +22,7 @@ export function calculateSchedule(schedule, end = 572) {
 }
 
 export function getEmissionSchedule(allocations, end = 572) {
-  return token.allocations.reduce((acc, curr) => {
+  return allocations.reduce((acc, curr) => {
     acc[curr.category] = calculateSchedule(curr.schedule, end);
     return acc;
   }, {});
