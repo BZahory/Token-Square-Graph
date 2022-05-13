@@ -75,6 +75,7 @@ export const CrossProjectBySector = () => {
           theme={theme}
         >
         <VictoryAxis dependentAxis tickFormat={t=>t+"%"} />
+        <VictoryAxis/>
           <VictoryGroup offset={25}>
             {grouped.map((alloc, i) => (
               <VictoryBar
@@ -110,6 +111,7 @@ export const CrossProjectDashboard = () => {
           theme={theme}
         >
           <VictoryAxis dependentAxis tickFormat={t=>t+"%"} />
+          <VictoryAxis/>
           <VictoryGroup
             offset={5}
             // padding={{ bottom: 50, left: 50, right: 50 }}
