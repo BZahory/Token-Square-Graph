@@ -19,9 +19,9 @@
 ### Built With
 
 [React.js](https://reactjs.org/)
-  
+
 [Victory](https://formidable.com/open-source/victory/)
-  
+
 [TailwindCSS](https://tailwindcss.com/)
 
 <!-- GETTING STARTED -->
@@ -29,21 +29,33 @@
 ### Installation and Starting
 
 Clone the repo
-   ```sh
-   git clone https://github.com/BZahory/token-square-graph.git
-   cd token-square-graph
-   ```
- Install NPM packages
-   ```sh
-   npm install
-   ```
+
+```sh
+git clone https://github.com/BZahory/token-square-graph.git
+cd token-square-graph
+```
+
+Install NPM packages
+
+```sh
+npm install
+```
+
 Start the app
-   ```sh
-   npm start
-   ```
+
+```sh
+npm start
+```
+
+## Video Demo
+
+<video width="790" height="650" controls>
+  <source src="src/video_demo.mov" type="video/mp4">
+Your browser does not support the video tag.
+</video>
 
 ### Project Links
 
 [DevPost](https://devpost.team/consensys/projects/205)
-  
+
 [Google Slides](https://docs.google.com/presentation/d/1hWNE44GGR4F-61MSKHURvx47xAlYJMvIpEn6IqCmRQk/edit?usp=sharing)
