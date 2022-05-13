@@ -7,12 +7,53 @@ import {
   VictoryArea,
   VictoryTheme,
   VictoryVoronoiContainer,
+  LineSegment,
 } from "victory";
 import { useState } from "react";
 import { getEmissionSchedule } from "./schedule";
 import { canvas } from "./tokenschedules";
 import { crvSchedule } from "./curveSchedule";
 import { crvPriceData } from "./curve";
+
+const colors = [
+  "#2C56DD",
+  "#202328",
+  "#3A4F97",
+  "#09237D",
+  "#698899",
+  "#FF6B4A",
+  "#3DEDD8",
+  "#01D49A",
+  "#3A4F97",
+  "#87A0AD",
+  "#FF896E",
+  "#84FDE7",
+  "#34DDAE",
+  "#6B7AB1",
+  "#A4B8C2",
+  "#FEA691",
+  "#A4FDEE",
+  "#67E5C2",
+  "#9DA7CB",
+  "#C2D0D5",
+  "#FFC4B7",
+  "#C1FEF3",
+  "#99EED7",
+  "#09237D",
+  "#E1E7EA",
+  "#FEE1DB",
+  "#E0FFF9",
+  "#CCF6EB",
+];
+
+var formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
 
 const toVictoryData = (line) => {
   return line.datapoints.map((dp) => ({
@@ -36,36 +77,36 @@ const toVictoryLegend = (line) => {
 export function CanvasTotal() {
   const [series, setSeries] = useState([
     {
-      name: "Canvas - Treasury",
-      color: "#c33",
+      name: "$HODL - Treasury",
+      color: colors[0],
       datapoints: getEmissionSchedule(canvas.allocations)["Treasury"].map(
         (x) => ({ x: x[3], y: x[0] })
       ),
     },
     {
-      name: "Canvas - Seed Investors",
-      color: "#3c3",
+      name: "$HODL - Seed Investors",
+      color: colors[1],
       datapoints: getEmissionSchedule(canvas.allocations)["Seed Investors"].map(
         (x) => ({ x: x[3], y: x[0] })
       ),
     },
     {
-      name: "Canvas - Team and Advisors",
-      color: "#39d",
+      name: "$HODL - Team and Advisors",
+      color: colors[2],
       datapoints: getEmissionSchedule(canvas.allocations)[
         "Team and Advisors"
       ].map((x) => ({ x: x[3], y: x[0] })),
     },
     {
-      name: "Canvas - Community Initiatives",
-      color: "#93c",
+      name: "$HODL - Community Initiatives",
+      color: colors[3],
       datapoints: getEmissionSchedule(canvas.allocations)[
         "Community Initiatives"
       ].map((x) => ({ x: x[3], y: x[0] })),
     },
     {
-      name: "Canvas - Ecosystem Development",
-      color: "#32f",
+      name: "$HODL - Ecosystem Development",
+      color: colors[4],
       datapoints: getEmissionSchedule(canvas.allocations)[
         "Ecosystem Development"
       ].map((x) => ({ x: x[3], y: x[0] })),
@@ -182,7 +223,7 @@ export function CanvasTotal() {
       <VictoryLegend
         name={"legend"}
         orientation="horizontal"
-        itemsPerRow={2}
+        itemsPerRow={3}
         style={{ labels: { fontSize: 8 } }}
         data={series.map((s, idx) => {
           const item = toVictoryLegend(s);
@@ -200,36 +241,36 @@ export function CanvasTotal() {
 export function CanvasWeekly() {
   const [series, setSeries] = useState([
     {
-      name: "Canvas - Treasury",
-      color: "#c33",
+      name: "$HODL - Treasury",
+      color: colors[0],
       datapoints: getEmissionSchedule(canvas.allocations)["Treasury"].map(
         (x) => ({ x: x[3], y: x[1] })
       ),
     },
     {
-      name: "Canvas - Seed Investors",
-      color: "#3c3",
+      name: "$HODL - Seed Investors",
+      color: colors[1],
       datapoints: getEmissionSchedule(canvas.allocations)["Seed Investors"].map(
         (x) => ({ x: x[3], y: x[1] })
       ),
     },
     {
-      name: "Canvas - Team and Advisors",
-      color: "#39d",
+      name: "$HODL - Team and Advisors",
+      color: colors[2],
       datapoints: getEmissionSchedule(canvas.allocations)[
         "Team and Advisors"
       ].map((x) => ({ x: x[3], y: x[1] })),
     },
     {
-      name: "Canvas - Community Initiatives",
-      color: "#93c",
+      name: "$HODL - Community Initiatives",
+      color: colors[3],
       datapoints: getEmissionSchedule(canvas.allocations)[
         "Community Initiatives"
       ].map((x) => ({ x: x[3], y: x[1] })),
     },
     {
-      name: "Canvas - Ecosystem Development",
-      color: "#32f",
+      name: "$HODL - Ecosystem Development",
+      color: colors[4],
       datapoints: getEmissionSchedule(canvas.allocations)[
         "Ecosystem Development"
       ].map((x) => ({ x: x[3], y: x[1] })),
@@ -346,7 +387,7 @@ export function CanvasWeekly() {
       <VictoryLegend
         name={"legend"}
         orientation="horizontal"
-        itemsPerRow={2}
+        itemsPerRow={3}
         style={{ labels: { fontSize: 8 } }}
         data={series.map((s, idx) => {
           const item = toVictoryLegend(s);
@@ -364,8 +405,8 @@ export function CanvasWeekly() {
 export function CurveOverlay() {
   const [series, setSeries] = useState([
     {
-      name: "Curve - Founder",
-      color: "#c33",
+      name: "$HODL - Founder",
+      color: colors[0],
       datapoints: crvSchedule["founder"].map((x, i) => ({
         y: x,
         x:
@@ -375,8 +416,8 @@ export function CurveOverlay() {
       })),
     },
     {
-      name: "Curve - Investors",
-      color: "#3c3",
+      name: "$HODL - Investors",
+      color: colors[1],
       datapoints: crvSchedule["investors"].map((x, i) => ({
         y: x,
         x:
@@ -386,8 +427,8 @@ export function CurveOverlay() {
       })),
     },
     {
-      name: "Curve - Employees",
-      color: "#39d",
+      name: "$HODL - Employees",
+      color: colors[2],
       datapoints: crvSchedule["employees"].map((x, i) => ({
         y: x,
         x:
@@ -397,8 +438,8 @@ export function CurveOverlay() {
       })),
     },
     {
-      name: "Curve - Early Users",
-      color: "#93c",
+      name: "$HODL - Early Users",
+      color: colors[3],
       datapoints: crvSchedule["earlyusers"].map((x, i) => ({
         y: x,
         x:
@@ -408,8 +449,8 @@ export function CurveOverlay() {
       })),
     },
     {
-      name: "Curve - Inflation",
-      color: "#32f",
+      name: "$HODL - Inflation",
+      color: colors[4],
       datapoints: crvSchedule["inflation"].map((x, i) => ({
         y: x,
         x:
@@ -485,24 +526,10 @@ export function CurveOverlay() {
       containerComponent={
         <VictoryVoronoiContainer
           radius={5}
-          labels={({ datum }) => `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(datum.y, 2)}`}
+          labels={({ datum }) => datum.y % 1000000 == 0 ? `Week: ${Math.round(datum.x, 2)}, Price: ${formatter.format(datum.y/10000000)}` : `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(datum.y, 2)}`}
         />
       }
     >
-      {/* <VictoryLine
-        standalone={true}
-        interpolation="bundle"
-        key={"crv-price"}
-        name="crv-price"
-        data={crvPriceData.map((x, i) => ({
-          x:
-            new Date(
-              new Date(crvPriceData[i]["Date"]) -
-                new Date(crvPriceData[crvPriceData.length - 1]["Date"])
-            ).getTime() / 604800000,
-          y: x.Close,
-        }))}
-      /> */}
 
       <VictoryAxis
         axisLabelComponent={<VictoryLabel dy={-35} />}
@@ -541,11 +568,39 @@ export function CurveOverlay() {
           />
         );
       })}
+      <VictoryAxis dependentAxis offsetX={425}   
+      tickLabelComponent={<VictoryLabel dx={50}/>}
+      tickComponent={(<LineSegment />)}
+
+              tickValues={[100000000,250000000,400000000,550000000, 700000000, 850000000]} tickFormat={(t)=>formatter.format(t/100000000)}/>
+      <VictoryLine
+      key={"area-" + "price"}
+            name={"area-" + "price"}
+    style={{
+              data: {
+                stroke: "black",
+                strokeWidth: 1,
+              },
+            }}
+        interpolation="bundle"
+        data={
+          crvPriceData.filter((x)=> new Date(x['Date']) >
+            new Date(crvPriceData[crvPriceData.length - 1]['Date'])
+        ).map(
+          (x, i) => ({
+          x:
+            new Date(
+              new Date(crvPriceData[i]["Date"]) -
+                new Date(crvPriceData[crvPriceData.length - 1]["Date"])
+            ).getTime() / 604800000,
+          y: x.Close*100000000,
+        }))}
+      />
 
       <VictoryLegend
         name={"legend"}
         orientation="horizontal"
-        itemsPerRow={2}
+        itemsPerRow={3}
         style={{ labels: { fontSize: 8 } }}
         data={series.map((s, idx) => {
           const item = toVictoryLegend(s);
