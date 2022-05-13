@@ -1,6 +1,6 @@
 export const canvas = {
   name: "Canvas",
-  symbol: "CAN", // TODO: made it up, no idea if it really is
+  symbol: "HODL",
   maxSupply: 1000000,
   allocations: [
     {

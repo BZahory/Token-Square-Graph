@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { VictoryPie, VictoryTheme } from 'victory';
+import { canvas as canvasToken } from './tokenschedules';
 
 const FormRangeInput = ({ onChange, name, label, value, max }) => {
   return (
@@ -18,6 +19,7 @@ const FormRangeInput = ({ onChange, name, label, value, max }) => {
             focus:outline-none focus:ring-0 focus:shadow-none
           "
           max={max}
+          min={0}
           value={value || "0"}
           id={name}
           onChange={onChange}
@@ -45,39 +47,63 @@ const TokenAllocationForm = ({ categories, onChange, max }) => {
   );
 }
 
-const defaultCategories = {
-  'team_and_advisors': 0,
-  'seed_investor': 0,
-  'treasury': 0,
-  'community_initiatives': 0,
-  'ecosystem_development': 0,
+const getCategories = (tokenAllocations) => {
+  const categories = {};
+
+  tokenAllocations.forEach((allocation) => {
+    categories[allocation.category] = allocation.allocation.alloc;
+  });
+
+  return categories;
 }
 
-const chartLabels = {
-  'team_and_advisors': 'team',
-  'seed_investor': 'seed',
-  'treasury': 'treasury',
-  'community_initiatives': 'community',
-  'ecosystem_development': 'ecosystem',
-}
+const colors = [
+  "#2C56DD",
+  "#FF6B4A",
+  "#09237D",
+  "#34DDAE",
+  "#202328",
+  "#3A4F97",
+  "#3DEDD8",
+  "#09237D",
+  "#698899",
+  "#01D49A",
+  "#3A4F97",
+  "#87A0AD",
+  "#FF896E",
+  "#84FDE7",
+  "#6B7AB1",
+  "#A4B8C2",
+  "#FEA691",
+  "#A4FDEE",
+  "#67E5C2",
+  "#9DA7CB",
+  "#C2D0D5",
+  "#FFC4B7",
+  "#C1FEF3",
+  "#99EED7",
+  "#E1E7EA",
+  "#FEE1DB",
+  "#E0FFF9",
+  "#CCF6EB",
+];
 
-const colors = ["#FABD03", "#34A853", "#EA4535", "#4285F4", "#FF6D01", "cyan" ];
+const TokenAllocation = ({ totalToken = canvasToken.maxSupply, allocations = canvasToken.allocations }) => {
+  const HUNDRED_PERCENT = 100;
+  const [categories, setCategories] = useState(getCategories(allocations));
 
-const TokenAllocation = ({ totalToken = 100 }) => {
-  const [categories, setCategories] = useState({...defaultCategories });
-
-  const totalAllocated = useMemo(() => {
-    const sum = Object.values(categories).reduce((accumulator, curr) => accumulator + curr);
-    return sum;
+  const percentageAllocated = useMemo(() => {
+    const percentageSum = Object.values(categories).reduce((accumulator, curr) => accumulator + curr);
+    return percentageSum;
   }, [categories]);
 
   const chartData = useMemo(() => {
-    let res = Object.keys(categories).map((category, i) => ({ x: chartLabels[category], y: categories[category], fill: colors[i] })).filter((datum) => !!datum.y);
+    const res = Object.keys(categories).map((category, i) => ({ x: category.split(' ')[0], y: categories[category], fill: colors[i] })).filter((datum) => !!datum.y);
 
-    if (totalToken - totalAllocated > 0) res.push({ x: 'unallocated', y: totalToken - totalAllocated, fill: '#737373' });
+    if ((HUNDRED_PERCENT - percentageAllocated) > 0) res.push({ x: 'unallocated', y: HUNDRED_PERCENT - percentageAllocated, fill: '#87A0AD' });
 
     return res;
-  }, [categories, totalAllocated, totalToken]);
+  }, [categories, percentageAllocated]);
   
   const handleChange = useCallback((category, value) => {
     setCategories({...categories, [category]: (value || 0)});;
@@ -85,10 +111,15 @@ const TokenAllocation = ({ totalToken = 100 }) => {
 
   return (
     <div className='container m-auto px-6 py-8'>
-      <h1 className='text-4xl'>Token Allocation</h1>
+      <h1 className='text-4xl'>${canvasToken.symbol} Allocation</h1>
+      <div className="text-lg mt-4">
+        <span><b>Total Tokens:</b> {totalToken.toLocaleString()}</span>
+        <span className='mx-3'><b>Allocated Tokens:</b> {((percentageAllocated/HUNDRED_PERCENT)*totalToken).toLocaleString(2)}</span>
+        <span className='mx-3'><b>Unallocated Tokens:</b> {(totalToken - ((percentageAllocated/HUNDRED_PERCENT)*totalToken)).toLocaleString(2)}</span>
+      </div>
       <div className="lg:grid lg:grid-cols-12 lg:gap-6 my-6">
         <div className="col-span-4 flex flex-col items-center justify-center">
-          <TokenAllocationForm onChange={handleChange} categories={categories} max={totalToken - totalAllocated} />
+          <TokenAllocationForm onChange={handleChange} categories={categories} max={HUNDRED_PERCENT - percentageAllocated} />
         </div>
         <div className='col-span-7 flex items-center'>
           <VictoryPie
@@ -119,4 +150,3 @@ const TokenAllocation = ({ totalToken = 100 }) => {
 }
 
 export default TokenAllocation;
-
