@@ -167,7 +167,8 @@ export function CanvasTotal() {
       };
     });
   };
-  return (
+  return (<>
+    <h1 className="text-4xl">$HODL Total Tokens By Week</h1>
     <VictoryChart
       height={200}
       width={500}
@@ -235,6 +236,7 @@ export function CanvasTotal() {
         height={90}
       />
     </VictoryChart>
+    </>
   );
 }
 
@@ -332,6 +334,8 @@ export function CanvasWeekly() {
     });
   };
   return (
+    <>
+    <h1 className="text-4xl">Minted Tokens By Week</h1>
     <VictoryChart
       height={200}
       width={500}
@@ -399,6 +403,7 @@ export function CanvasWeekly() {
         height={90}
       />
     </VictoryChart>
+    </>
   );
 }
 
@@ -516,6 +521,8 @@ export function CurveOverlay() {
     });
   };
   return (
+    <>
+    <h1 className="text-4xl">$HODL Total Tokens and Price By Week</h1>
     <VictoryChart
       domain={{ x: [0, 90] }}
       height={200}
@@ -612,5 +619,6 @@ export function CurveOverlay() {
         height={90}
       />
     </VictoryChart>
+    </>
   );
 }

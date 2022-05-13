@@ -74,6 +74,8 @@ export const CrossProjectBySector = () => {
           padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
           theme={theme}
         >
+      <VictoryAxis dependentAxis tickFormat={t=>t+"%"} />
+
           <VictoryGroup offset={25}>
             {grouped.map((alloc, i) => (
               <VictoryBar
