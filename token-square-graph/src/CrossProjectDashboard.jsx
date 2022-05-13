@@ -133,6 +133,38 @@ export const CrossProjectDashboard = () => {
                 // labelComponent={<VictoryTooltip />}
                 labels={({ datum }) => datum.label}
                 categories={{ x: alloc.x }}
+                events={[
+                  {
+                    eventHandlers: {
+                      onMouseOver: () => {
+                        return [
+                          {
+                            eventKey: "all",
+                            target: "data",
+                            mutation: (props) => {
+                              return {
+                                style: Object.assign({}, props.style, {
+                                  fill: "tomato",
+                                }),
+                              };
+                            },
+                          },
+                        ];
+                      },
+                      onMouseOut: () => {
+                        return [
+                          {
+                            eventKey: "all",
+                            target: "data",
+                            mutation: () => {
+                              return null;
+                            },
+                          },
+                        ];
+                      },
+                    },
+                  },
+                ]}
               />
             ))}
           </VictoryGroup>
