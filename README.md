@@ -49,7 +49,7 @@ npm start
 
 ## Video Demo
 
-<video src="src/video_demo.mov" type="video/mov" width="790" height="650" width=180 controls> </video>
+  ![Demo](./src/demo.gif?raw=true "Demo")
 
 ### Project Links
 
