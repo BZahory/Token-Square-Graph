@@ -49,10 +49,7 @@ npm start
 
 ## Video Demo
 
-<video width="790" height="650" controls>
-  <source src="src/video_demo.mov" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+<video src="src/video_demo.mov" type="video/mov" width="790" height="650" width=180 controls> </video>
 
 ### Project Links
 
