@@ -19,7 +19,9 @@
 ### Built With
 
 [React.js](https://reactjs.org/)
+  
 [Victory](https://formidable.com/open-source/victory/)
+  
 [TailwindCSS](https://tailwindcss.com/)
 
 <!-- GETTING STARTED -->
@@ -43,4 +45,5 @@ Start the app
 ### Project Links
 
 [DevPost](https://devpost.team/consensys/projects/205)
+  
 [Google Slides](https://docs.google.com/presentation/d/1hWNE44GGR4F-61MSKHURvx47xAlYJMvIpEn6IqCmRQk/edit?usp=sharing)
