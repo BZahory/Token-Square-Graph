@@ -8,6 +8,7 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
   LineSegment,
+  VictoryTooltip,
 } from "victory";
 import { useState } from "react";
 import { getEmissionSchedule } from "./schedule";
@@ -46,9 +47,9 @@ const colors = [
   "#CCF6EB",
 ];
 
-var formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
+var formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
 
   // These options are needed to round to whole numbers if that's what you want.
   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
@@ -167,75 +168,79 @@ export function CanvasTotal() {
       };
     });
   };
-  return (<>
-    <h1 className="text-4xl">$HODL Total Tokens By Week</h1>
-    <VictoryChart
-      height={200}
-      width={500}
-      padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
-      events={buildEvents()}
-      theme={VictoryTheme.material}
-      containerComponent={
-        <VictoryVoronoiContainer
-          radius={5}
-          labels={({ datum }) =>
-            `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(datum.y, 2)}`
-          }
-        />
-      }
-    >
-      <VictoryAxis
-        axisLabelComponent={<VictoryLabel dy={-35} />}
-        label="Total tokens"
-        style={{
-          axisLabel: { fontSize: 10, padding: 30 },
-          tickLabels: { fontSize: 10, padding: 5 },
-        }}
-        dependentAxis
-      />
-
-      <VictoryAxis
-        label="Week"
-        style={{
-          axisLabel: { fontSize: 10, padding: 30 },
-          tickLabels: { fontSize: 10, padding: 5 },
-        }}
-      />
-      {series.map((s, idx) => {
-        if (hiddenSeries.has(idx)) {
-          return undefined;
-        }
-        return (
-          <VictoryArea
-            key={"area-" + idx}
-            name={"area-" + idx}
-            data={toVictoryData(s)}
-            style={{
-              data: {
-                fill: s.color,
-                fillOpacity: 0.2,
-                stroke: s.color,
-                strokeWidth: 1,
-              },
-            }}
+  return (
+    <>
+      <h1 className="text-4xl">$HODL Total Tokens By Week</h1>
+      <VictoryChart
+        height={200}
+        width={500}
+        padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
+        events={buildEvents()}
+        theme={VictoryTheme.material}
+        containerComponent={
+          <VictoryVoronoiContainer
+            radius={5}
+            labels={({ datum }) =>
+              `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(
+                datum.y,
+                2
+              )}`
+            }
           />
-        );
-      })}
-      <VictoryLegend
-        name={"legend"}
-        orientation="horizontal"
-        itemsPerRow={3}
-        style={{ labels: { fontSize: 8 } }}
-        data={series.map((s, idx) => {
-          const item = toVictoryLegend(s);
+        }
+      >
+        <VictoryAxis
+          axisLabelComponent={<VictoryLabel dy={-35} />}
+          label="Total tokens"
+          style={{
+            axisLabel: { fontSize: 10, padding: 30 },
+            tickLabels: { fontSize: 10, padding: 5 },
+          }}
+          dependentAxis
+        />
+
+        <VictoryAxis
+          label="Week"
+          style={{
+            axisLabel: { fontSize: 10, padding: 30 },
+            tickLabels: { fontSize: 10, padding: 5 },
+          }}
+        />
+        {series.map((s, idx) => {
           if (hiddenSeries.has(idx)) {
-            return { ...item, symbol: { fill: "#999" } };
+            return undefined;
           }
-          return item;
+          return (
+            <VictoryArea
+              key={"area-" + idx}
+              name={"area-" + idx}
+              data={toVictoryData(s)}
+              style={{
+                data: {
+                  fill: s.color,
+                  fillOpacity: 0.2,
+                  stroke: s.color,
+                  strokeWidth: 1,
+                },
+              }}
+            />
+          );
         })}
-        height={90}
-      />
-    </VictoryChart>
+        <VictoryLegend
+          name={"legend"}
+          orientation="horizontal"
+          itemsPerRow={3}
+          style={{ labels: { fontSize: 8 } }}
+          data={series.map((s, idx) => {
+            const item = toVictoryLegend(s);
+            if (hiddenSeries.has(idx)) {
+              return { ...item, symbol: { fill: "#999" } };
+            }
+            return item;
+          })}
+          height={90}
+        />
+      </VictoryChart>
     </>
   );
 }
@@ -335,74 +340,77 @@ export function CanvasWeekly() {
   };
   return (
     <>
-    <h1 className="text-4xl">Minted Tokens By Week</h1>
-    <VictoryChart
-      height={200}
-      width={500}
-      padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
-      events={buildEvents()}
-      theme={VictoryTheme.material}
-      containerComponent={
-        <VictoryVoronoiContainer
-          radius={5}
-          labels={({ datum }) =>
-            `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(datum.y, 2)}`
-          }
-        />
-      }
-    >
-      <VictoryAxis
-        axisLabelComponent={<VictoryLabel dy={-35} />}
-        label="Tokens Minted Weekly"
-        style={{
-          axisLabel: { fontSize: 10, padding: 30 },
-          tickLabels: { fontSize: 10, padding: 5 },
-        }}
-        dependentAxis
-      />
-
-      <VictoryAxis
-        label="Week"
-        style={{
-          axisLabel: { fontSize: 10, padding: 30 },
-          tickLabels: { fontSize: 10, padding: 5 },
-        }}
-      />
-      {series.map((s, idx) => {
-        if (hiddenSeries.has(idx)) {
-          return undefined;
-        }
-        return (
-          <VictoryArea
-            key={"area-" + idx}
-            name={"area-" + idx}
-            data={toVictoryData(s)}
-            style={{
-              data: {
-                fill: s.color,
-                fillOpacity: 0.2,
-                stroke: s.color,
-                strokeWidth: 1,
-              },
-            }}
+      <h1 className="text-4xl">Minted Tokens By Week</h1>
+      <VictoryChart
+        height={200}
+        width={500}
+        padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
+        events={buildEvents()}
+        theme={VictoryTheme.material}
+        containerComponent={
+          <VictoryVoronoiContainer
+            radius={5}
+            labels={({ datum }) =>
+              `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(
+                datum.y,
+                2
+              )}`
+            }
           />
-        );
-      })}
-      <VictoryLegend
-        name={"legend"}
-        orientation="horizontal"
-        itemsPerRow={3}
-        style={{ labels: { fontSize: 8 } }}
-        data={series.map((s, idx) => {
-          const item = toVictoryLegend(s);
+        }
+      >
+        <VictoryAxis
+          axisLabelComponent={<VictoryLabel dy={-35} />}
+          label="Tokens Minted Weekly"
+          style={{
+            axisLabel: { fontSize: 10, padding: 30 },
+            tickLabels: { fontSize: 10, padding: 5 },
+          }}
+          dependentAxis
+        />
+
+        <VictoryAxis
+          label="Week"
+          style={{
+            axisLabel: { fontSize: 10, padding: 30 },
+            tickLabels: { fontSize: 10, padding: 5 },
+          }}
+        />
+        {series.map((s, idx) => {
           if (hiddenSeries.has(idx)) {
-            return { ...item, symbol: { fill: "#999" } };
+            return undefined;
           }
-          return item;
+          return (
+            <VictoryArea
+              key={"area-" + idx}
+              name={"area-" + idx}
+              data={toVictoryData(s)}
+              style={{
+                data: {
+                  fill: s.color,
+                  fillOpacity: 0.2,
+                  stroke: s.color,
+                  strokeWidth: 1,
+                },
+              }}
+            />
+          );
         })}
-        height={90}
-      />
-    </VictoryChart>
+        <VictoryLegend
+          name={"legend"}
+          orientation="horizontal"
+          itemsPerRow={3}
+          style={{ labels: { fontSize: 8 } }}
+          data={series.map((s, idx) => {
+            const item = toVictoryLegend(s);
+            if (hiddenSeries.has(idx)) {
+              return { ...item, symbol: { fill: "#999" } };
+            }
+            return item;
+          })}
+          height={90}
+        />
+      </VictoryChart>
     </>
   );
 }
@@ -522,103 +530,117 @@ export function CurveOverlay() {
   };
   return (
     <>
-    <h1 className="text-4xl">$HODL Total Tokens and Price By Week</h1>
-    <VictoryChart
-      domain={{ x: [0, 90] }}
-      height={200}
-      width={500}
-      padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
-      events={buildEvents()}
-      theme={VictoryTheme.material}
-      containerComponent={
-        <VictoryVoronoiContainer
-          radius={5}
-          labels={({ datum }) => datum.y % 1000000 == 0 ? `Week: ${Math.round(datum.x, 2)}, Price: ${formatter.format(datum.y/10000000)}` : `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(datum.y, 2)}`}
+      <h1 className="text-4xl">$HODL Total Tokens and Price By Week</h1>
+      <VictoryChart
+        domain={{ x: [0, 90] }}
+        height={200}
+        width={500}
+        padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
+        events={buildEvents()}
+        theme={VictoryTheme.material}
+        containerComponent={<VictoryVoronoiContainer radius={5} />}
+      >
+        <VictoryAxis
+          axisLabelComponent={<VictoryLabel dy={-35} />}
+          label="Total Tokens"
+          style={{
+            axisLabel: { fontSize: 10, padding: 30 },
+            tickLabels: { fontSize: 10, padding: 5 },
+          }}
+          dependentAxis
         />
-      }
-    >
 
-      <VictoryAxis
-        axisLabelComponent={<VictoryLabel dy={-35} />}
-        label="Total Tokens"
-        style={{
-          axisLabel: { fontSize: 10, padding: 30 },
-          tickLabels: { fontSize: 10, padding: 5 },
-        }}
-        dependentAxis
-      />
-
-      <VictoryAxis
-        label="Week"
-        style={{
-          axisLabel: { fontSize: 10, padding: 30 },
-          tickLabels: { fontSize: 10, padding: 5 },
-        }}
-      />
-      {series.map((s, idx) => {
-        if (hiddenSeries.has(idx)) {
-          return undefined;
-        }
-        return (
-          <VictoryLine
-            key={"area-" + idx}
-            name={"area-" + idx}
-            data={toVictoryData(s)}
-            style={{
-              data: {
-                fill: s.color,
-                fillOpacity: 0.2,
-                stroke: s.color,
-                strokeWidth: 1,
-              },
-            }}
-          />
-        );
-      })}
-      <VictoryAxis dependentAxis offsetX={425}   
-      tickLabelComponent={<VictoryLabel dx={50}/>}
-      tickComponent={(<LineSegment />)}
-
-              tickValues={[100000000,250000000,400000000,550000000, 700000000, 850000000]} tickFormat={(t)=>formatter.format(t/100000000)}/>
-      <VictoryLine
-      key={"area-" + "price"}
-            name={"area-" + "price"}
-    style={{
-              data: {
-                stroke: "black",
-                strokeWidth: 1,
-              },
-            }}
-        interpolation="bundle"
-        data={
-          crvPriceData.filter((x)=> new Date(x['Date']) >
-            new Date(crvPriceData[crvPriceData.length - 1]['Date'])
-        ).map(
-          (x, i) => ({
-          x:
-            new Date(
-              new Date(crvPriceData[i]["Date"]) -
-                new Date(crvPriceData[crvPriceData.length - 1]["Date"])
-            ).getTime() / 604800000,
-          y: x.Close*100000000,
-        }))}
-      />
-
-      <VictoryLegend
-        name={"legend"}
-        orientation="horizontal"
-        itemsPerRow={3}
-        style={{ labels: { fontSize: 8 } }}
-        data={series.map((s, idx) => {
-          const item = toVictoryLegend(s);
+        <VictoryAxis
+          label="Week"
+          style={{
+            axisLabel: { fontSize: 10, padding: 30 },
+            tickLabels: { fontSize: 10, padding: 5 },
+          }}
+        />
+        {series.map((s, idx) => {
           if (hiddenSeries.has(idx)) {
-            return { ...item, symbol: { fill: "#999" } };
+            return undefined;
           }
-          return item;
+          return (
+            <VictoryLine
+              key={"area-" + idx}
+              name={"area-" + idx}
+              data={toVictoryData(s)}
+              style={{
+                data: {
+                  fill: s.color,
+                  fillOpacity: 0.2,
+                  stroke: s.color,
+                  strokeWidth: 1,
+                },
+              }}
+              labelComponent={<VictoryTooltip />}
+              labels={({ datum }) =>
+                `Week: ${Math.round(datum.x, 2)}, Tokens: ${Math.round(
+                  datum.y,
+                  2
+                )}`
+              }
+            />
+          );
         })}
-        height={90}
-      />
-    </VictoryChart>
+        <VictoryAxis
+          dependentAxis
+          offsetX={425}
+          tickLabelComponent={<VictoryLabel dx={50} />}
+          tickComponent={<LineSegment />}
+          tickValues={[
+            100000000, 250000000, 400000000, 550000000, 700000000, 850000000,
+          ]}
+          tickFormat={(t) => formatter.format(t / 100000000)}
+        />
+        <VictoryLine
+          key={"area-" + "price"}
+          name={"area-" + "price"}
+          style={{
+            data: {
+              stroke: "black",
+              strokeWidth: 1,
+            },
+          }}
+          interpolation="linear"
+          data={crvPriceData
+            .filter(
+              (x) =>
+                new Date(x["Date"]) >
+                new Date(crvPriceData[crvPriceData.length - 1]["Date"])
+            )
+            .map((x, i) => ({
+              x:
+                new Date(
+                  new Date(crvPriceData[i]["Date"]) -
+                    new Date(crvPriceData[crvPriceData.length - 1]["Date"])
+                ).getTime() / 604800000,
+              y: x.Close * 100000000,
+            }))}
+          labelComponent={<VictoryTooltip />}
+          labels={({ datum }) =>
+            `Week: ${Math.round(datum.x, 2)}, Price: ${formatter.format(
+              datum.y / 100000000
+            )}`
+          }
+        />
+
+        <VictoryLegend
+          name={"legend"}
+          orientation="horizontal"
+          itemsPerRow={3}
+          style={{ labels: { fontSize: 8 } }}
+          data={series.map((s, idx) => {
+            const item = toVictoryLegend(s);
+            if (hiddenSeries.has(idx)) {
+              return { ...item, symbol: { fill: "#999" } };
+            }
+            return item;
+          })}
+          height={90}
+        />
+      </VictoryChart>
     </>
   );
 }
