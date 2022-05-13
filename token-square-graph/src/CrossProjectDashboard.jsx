@@ -9,15 +9,25 @@ import {
   VictoryTheme,
 } from "victory";
 import { cleanedAllocations } from "./tokenallocation";
+import theme from "./theme";
 
 const sectors = ["DEFI", "NFT"];
 
-const categories = ["presale", "privateInvestors", "community", "team"];
+const categories = [
+  ["presale", "Presale"],
+  ["privateInvestors", "Private Investors"],
+  ["community", "Community"],
+  ["team", "Team"],
+];
 
 function formatData(data) {
   return Object.entries(data).reduce((acc, [key, value]) => {
-    if (categories.includes(key)) {
-      acc.push({ x: key, y: value, label: data.projectName });
+    if (categories.map((cat) => cat[0]).includes(key)) {
+      acc.push({
+        x: categories.find((c) => c[0] === key)[1],
+        y: value,
+        label: data.projectName,
+      });
     }
     return acc;
   }, []);
@@ -33,16 +43,16 @@ const groupBySector = (data) => {
   const grouped = [
     [
       ...categories.map((cat) => ({
-        x: cat,
-        y: average(defi, cat),
+        x: cat[1],
+        y: average(defi, cat[0]),
         fill: "tomato",
         label: "defi",
       })),
     ],
     [
       ...categories.map((cat) => ({
-        x: cat,
-        y: average(nft, cat),
+        x: cat[1],
+        y: average(nft, cat[0]),
         fill: "orange",
         label: "nft",
       })),
@@ -62,6 +72,7 @@ export const CrossProjectBySector = () => {
           height={200}
           width={500}
           padding={{ top: 50, bottom: 50, left: 75, right: 75 }}
+          theme={theme}
         >
           <VictoryGroup offset={25}>
             {grouped.map((alloc, i) => (
@@ -95,7 +106,7 @@ export const CrossProjectDashboard = () => {
           width={550}
           padding={{ top: 50, bottom: 50, left: 50, right: 50 }}
           domainPadding={50}
-          theme={VictoryTheme.material}
+          theme={theme}
         >
           <VictoryGroup
             offset={5}
