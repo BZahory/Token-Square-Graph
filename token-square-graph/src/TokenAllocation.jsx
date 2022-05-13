@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { VictoryPie } from 'victory';
+import { VictoryPie, VictoryTheme } from 'victory';
 
 const FormRangeInput = ({ onChange, name, label, value, max }) => {
   return (
     <div className="w-full text-left my-4">
-      <label htmlFor={name} className="w-full form-label text-xl capitalize">{label.replace('_', ' ')}</label>
+      <label htmlFor={name} className="w-full form-label text-xl capitalize">{label.replace(/_/g, ' ')}</label>
       <div className='flex'>
         <input
           type="range"
@@ -38,7 +38,7 @@ const TokenAllocationForm = ({ categories, onChange, max }) => {
             onChange(category, +e.target.value)
           }}
           categories={categories}
-          max={categories[category] > max ? categories[category]+max : max}
+          max={categories[category]+max}
       />
       ))}
     </>
@@ -46,12 +46,19 @@ const TokenAllocationForm = ({ categories, onChange, max }) => {
 }
 
 const defaultCategories = {
-  'team': 0,
-  'investor': 0,
+  'team_and_advisors': 0,
+  'seed_investor': 0,
   'treasury': 0,
-  'community': 0,
-  'private_sale': 0,
-  'public_sale': 0,
+  'community_initiatives': 0,
+  'ecosystem_development': 0,
+}
+
+const chartLabels = {
+  'team_and_advisors': 'team',
+  'seed_investor': 'seed',
+  'treasury': 'treasury',
+  'community_initiatives': 'community',
+  'ecosystem_development': 'ecosystem',
 }
 
 const colors = ["#FABD03", "#34A853", "#EA4535", "#4285F4", "#FF6D01", "cyan" ];
@@ -65,7 +72,7 @@ const TokenAllocation = ({ totalToken = 100 }) => {
   }, [categories]);
 
   const chartData = useMemo(() => {
-    let res = Object.keys(categories).map((category, i) => ({ x: category.replace('_', ' '), y: categories[category], fill: colors[i] })).filter((datum) => !!datum.y);
+    let res = Object.keys(categories).map((category, i) => ({ x: chartLabels[category], y: categories[category], fill: colors[i] })).filter((datum) => !!datum.y);
 
     if (totalToken - totalAllocated > 0) res.push({ x: 'unallocated', y: totalToken - totalAllocated, fill: '#737373' });
 
@@ -92,17 +99,19 @@ const TokenAllocation = ({ totalToken = 100 }) => {
             labels={({ datum }) => `${datum.x}\n${datum.y}%`}
             labelRadius={({ innerRadius }) => innerRadius + 3 }
             labelPlacement='parallel'
+            theme={VictoryTheme.material}
             style={{
               data: {
                 fill: ({ datum }) => datum.fill,
                 opacity: ({ datum }) => datum.opacity
               },
               labels: {
-                fontSize: 3
+                fontSize: 3,
+                fill: '#ffffff',
+                textTransform: 'capitalize',
               }
             }}
-          >
-          </VictoryPie>
+          />
         </div>
       </div>
     </div>
