@@ -22,7 +22,7 @@
 
 <div align="center">
   <a href="./src/TokenSquareLogo.png">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="./src/TokenSquareLogo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Token Square Frontend</h3>
@@ -32,41 +32,11 @@
   </p>
 </div>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-  </ol>
-</details>
-
-<!-- ABOUT THE PROJECT -->
-
-## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 ### Built With
 
-- [React.js](https://reactjs.org/)
-- [Victory](https://formidable.com/open-source/victory/)
-- [TailwindCSS](https://tailwindcss.com/)
+[React.js](https://reactjs.org/)
+[Victory](https://formidable.com/open-source/victory/)
+[TailwindCSS](https://tailwindcss.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -74,16 +44,16 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Installation and Starting
 
-1. Clone the repo
+Clone the repo
    ```sh
    git clone https://github.com/BZahory/token-square-graph.git
    cd token-square-graph
    ```
-2. Install NPM packages
+ Install NPM packages
    ```sh
    npm install
    ```
-3. Start the app
+Start the app
    ```sh
    npm start
    ```
@@ -92,5 +62,5 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Project Links
 
-- [DevPost](https://devpost.team/consensys/projects/205)
-- [Google Slides](https://docs.google.com/presentation/d/1hWNE44GGR4F-61MSKHURvx47xAlYJMvIpEn6IqCmRQk/edit?usp=sharing)
+[DevPost](https://devpost.team/consensys/projects/205)
+[Google Slides](https://docs.google.com/presentation/d/1hWNE44GGR4F-61MSKHURvx47xAlYJMvIpEn6IqCmRQk/edit?usp=sharing)
